@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    <link rel="stylesheet" href="style.css">
+    
+</head>
+<body>
+    
+    <div class="weather">
+        <div class="weather__location">
+            <form class="weather__form" action="submit">
+                <img id="imgLocation" src="img/location.png" alt="location">
+                <input id="inputLocation" name="location" type="text">
+            </form>
+        </div>
+        
+        <div class="weather__info">
+            <div class="weatehr__info__header">
+                <div class="weather__info__city">Paris</div>
+                <div class="weather__info__icon">
+                    <img src="img/cloudy.png" alt="weatherImg">
+                </div> 
+            </div>
+
+            <div class="weather__info_temp">
+                20 <sup>°C</sup>
+            </div>
+
+            <div class="weather__info_wordForm">
+                Cloudly
+            </div>
+
+            <div class="weather__info__more">
+                <div id="wind" class="weather__info__more__item">
+                    <div class="windSpeedImg">
+                        <img src="img/wind.png" alt="wind">
+                    </div>
+                    Wind Speed
+                    <div class="windSpeed">
+                        7 m/s
+                    </div>
+                </div>
+                <div id="humidity" class="weather__info__more__item">
+                    <div class="humidityImg">
+                        <img src="img/humidity.png" alt="humidity">
+                    </div>
+                        Humidity
+                    <div class="humidity">
+                        67%
+                    </div>
+                </div>
+                <div id="pressure" class="weather__info__more__item">
+                    <div class="pressureImg">
+                        <img src="img/pressure.png" alt="pressure">
+                    </div>
+                    Pressure
+                    <div class="pressure">
+                        1014
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

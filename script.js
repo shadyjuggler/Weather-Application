@@ -1,41 +1,104 @@
-// 6b633e1fb047126be69259e5b820d375
-
 document.addEventListener("DOMContentLoaded", () => {
 
-    const locInput = document.querySelector("#inputLocation"),
-          locForm = document.querySelector(".weather__form");
 
-    locForm.addEventListener("submit", e => {
-        e.preventDefault();
+    // Vars
+    
+    const locationInput = document.querySelector("#inputLocation"),
+          locationForm = document.querySelector(".weather__form"),
 
-        locInput.placeholder = "Loading..."
+          cityName = document.querySelector(".weather__info__city"),
+          temperature = document.querySelector(".weather__info_temp"),
+          weatherDescr = document.querySelector(".weather__info_wordForm"),
+          windSpeed = document.querySelector(".windSpeed"),
+          humidity = document.querySelector(".humidity"),
+          pressure = document.querySelector(".pressure"),
+          weatherIcon = document.querySelector(".weather__info__icon img");
 
-        getWeather(locInput.value)
+
+    //  Set Weather by default
+    
+    getWeather("Sydney")
         .then(data => {
-            locInput.placeholder = "Done!"
-            console.log(data)
 
-            setValues(document.querySelector(".weather__info__city"), data.name)
-            // console.log(getWeatherValues(data, "humidity"))
-            setValues(document.querySelector(".weather__info_temp"), (getWeatherValues(data, "temp") / 32).toFixed(10) + "<sup>°C</sup>")
+            successWeatherResp(data);
+
+        })
+        .catch(() => {
+
+            errorWeatherResp()
+            
         });
 
+
+    // Set weather by user input
+    
+    locationForm.addEventListener("submit", e => {
+        e.preventDefault();
+
+        locationInput.placeholder = "Loading...";
+
+        getWeather(locationInput.value)
+            .then(data => {
+
+                successWeatherResp(data);
+
+            })
+            .catch(() => {
+
+                errorWeatherResp()
+
+            });
+
         setTimeout(() => {
-            locInput.placeholder = "";
+            locationInput.placeholder = "";
         }, 4000)
 
-        locForm.reset();
+        locationForm.reset();
     })
 
 
+    // Functions
+    
     async function getWeather (location) {
-        return await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=6b633e1fb047126be69259e5b820d375`)
-        .then(resp => resp.json())
+        return await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=6b633e1fb047126be69259e5b820d375&units=metric`)
+            .then(resp => resp.json());
     } 
 
+    async function getWeatherIcon (pngName) {
+        return await fetch(`https://openweathermap.org/img/wn/${pngName}.png`)
+            .then(resp => resp.blob())
+            .then(blob => URL.createObjectURL(blob));
+    }
 
-    function getWeatherValues (obj, value) {
-        return obj["main"][value];
+    function successWeatherResp (data) {
+
+        locationInput.placeholder = "Done!";
+
+
+        setValues(cityName, data.name); 
+
+        setValues(temperature, Math.round(data.main.temp) + "<sup>°C</sup>");
+
+        setValues(weatherDescr, data.weather[0].main);
+
+        setValues(windSpeed, data.wind.speed + " m/s");
+
+        setValues(humidity, data.main.humidity + "%");
+
+        setValues(pressure, data.main.pressure + " hPa");
+        
+
+        getWeatherIcon(data.weather[0].icon)
+        .then(data => {
+            weatherIcon.src = data;
+        })
+
+    }
+
+    function errorWeatherResp () {
+        setValues(document.querySelector(".weather__info__city"), "City not found!");
+
+        weatherIcon.src = "img/warning.png";
     }
 
     function setValues (element, value) {
@@ -43,4 +106,6 @@ document.addEventListener("DOMContentLoaded", () => {
         element.innerHTML = value;
     }
 
-})
+
+
+});
